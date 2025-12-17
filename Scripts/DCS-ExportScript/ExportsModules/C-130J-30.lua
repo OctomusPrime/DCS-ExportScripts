@@ -328,15 +328,15 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 	   
 	   
 	--uncomment to split line list length and values to log
-	
+	--[[
 	local lTEST = splitLines(list_indication(18))
 	--ExportScript.Tools.WriteToLog(ExportScript.Tools.dump(lTEST))
-	--[[
+	
 	local lParams = list_cockpit_params()
 	ExportScript.Tools.WriteToLog("MASTER_AV_STATE - "..getIndexValue(lParams, "MASTER_AV_STATE"))
 	ExportScript.Tools.WriteToLog("AUTONAV_STATE - "..getIndexValue(lParams, "AUTONAV_STATE"))
 	ExportScript.Tools.WriteToLog(lParams)
-	]]
+	
 	--ExportScript.Tools.WriteToLog('TEST: '..ExportScript.Tools.dump(list_indication(22)))		--uncomment to output to log raw list before splitting lines
 	
 	ExportScript.Tools.WriteToLog('\nlTEST Length: ' .. #lTEST)
@@ -353,7 +353,7 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 		end
 	end
 	
-	
+	]]
 	local lCNBP = splitLines(list_indication(22))
 	
 	
@@ -894,4 +894,5 @@ function ExportScript.ListIndicationLogDump(mainPanelDevice) -- list_indication 
         ExportScript.Tools.WriteToLog(ltmp2..': '..ExportScript.Tools.dump(ltmp1))
     end
 end
+
 
