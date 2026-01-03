@@ -19,8 +19,8 @@ local function splitLines(input)
 			and not line:match("^%{")
 			and not line:match("^%}")
 			and not line:match("^children") then
-				--line = line:gsub(":", "%%3A") uncomment if colons cause problems in output
-				--line = line:gsub("°", "*")  uncomment if degrees cause problems in output
+				--line = line:gsub(":", "%%3A") --uncomment if colons cause problems in output
+				line = line:gsub("%^", "°")  --uncomment if degrees cause problems in output
 				table.insert(lines, line)
 		end
     end
@@ -47,12 +47,24 @@ local function findIndexBySubstring(list, substring)
     -- Returns 'i' immediately when a match is found
     for i, v in ipairs(list) do 
 		if string.find(v, substring) then 
-			ExportScript.Tools.WriteToLog("findIndexBySubstring Returned "..i)
+			--ExportScript.Tools.WriteToLog("findIndexBySubstring Returned "..i)
 			return i 
 		end 
 	end
-	ExportScript.Tools.WriteToLog("findIndexBySubstring Returned nil")
+	--ExportScript.Tools.WriteToLog("findIndexBySubstring Returned nil")
     return nil -- Returns nil if the substring isn't found anywhere
+end
+
+local function findIndex(tbl, valueToFind)
+    -- Iterate through the table using the numeric indices
+    for index, value in ipairs(tbl) do
+        -- Ensure the value we are checking is actually a string before calling :find() on it
+        if type(value) == "string" and value:find(valueToFind) then
+            -- :find returns the start/end index if found, which evaluates to true in the if statement
+            return index -- Return the key once a partial match is found
+        end
+    end
+    return nil -- Return nil if the value is not found after the loop
 end
 
 
@@ -87,18 +99,12 @@ ExportScript.ConfigArguments =
 	[321] = "%0.1f",		--Engine 4 Fire Handle, CCW/NORM/CW {-0.5, 0.0, 0.5}
 	
 	--ENGINE PANEL
-	[310] = "%0.2f",			--Engine 1 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
-	[311] = "%0.2f",			--Engine 2 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
-	[312] = "%0.2f",			--Engine 3 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
-	[313] = "%0.2f",			--Engine 4 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
-	
-	[46] = "%1d",			--Engine 1 LSGI Switch
-	[47] = "%1d",			--Engine 2 LSGI Switch
-	[48] = "%1d",			--Engine 3 LSGI Switch
-	[49] = "%1d",			--Engine 4 LSGI Switch
-	
-	[19] = "%1d",			--Autothrottle Disconnect Button Left
-	[20] = "%1d",			--Autothrottle Disconnect Button Right
+	[310] = "%0.2f",		--Engine 1 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
+	[311] = "%0.2f",		--Engine 2 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
+	[312] = "%0.2f",		--Engine 3 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
+	[313] = "%0.2f",		--Engine 4 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
+	[322] = "%0.1f",		--APU Start Switch, STOP/RUN/START {0.00, 0.50, 1.00}
+	[425] = "%1d",			--APU Alarm Switch, OFF/ON {0,1}
 	
 	--LANDING GEAR LIGHTS PANEL
 	[126] = "%1d",			--Gear Handle
@@ -110,154 +116,181 @@ ExportScript.ConfigArguments =
 	[34] = "%1d",			--Taxi Light Switch
 	[35] = "%1d",			--Wingtip Taxi Light Switch
 	
-	--AMU PANEL
-	[116] = "%1d",			--HDD 1 Brightness, DECREASE/NEUTRAL/INCREASE {-1, 0, 1}
-	[117] = "%1d",			--HDD 2 Brightness, DECREASE/NEUTRAL/INCREASE {-1, 0, 1}
-	[118] = "%1d",			--HDD 3 Brightness, DECREASE/NEUTRAL/INCREASE {-1, 0, 1}
-	[119] = "%1d",			--HDD 4 Brightness, DECREASE/NEUTRAL/INCREASE {-1, 0, 1}
+	--OIL COOLER FLAP PANEL
+	[495] = "%0.1f",		--Oil Cooler Flap Switch 1
+	[496] = "%0.1f",		--Oil Cooler Flap Switch 2
+	[497] = "%0.1f",		--Oil Cooler Flap Switch 3
+	[498] = "%0.1f",		--Oil Cooler Flap Switch 4
 	
-	[200] = "%1d",			--Pilot AMU Brightness, DECREASE/NEUTRAL/INCREASE {-1, 0, 1}
-	[202] = "%1d",			--CoPilot AMU Brightness, DECREASE/NEUTRAL/INCREASE {-1, 0, 1}
+	--ELECTRICAL PANEL
+	[341] = "%1d",			--Generator 1
+	[342] = "%1d",			--Generator 2
+	[343] = "%1d",			--Generator 3
+	[344] = "%1d",			--Generator 4
+	[467] = "%1d",			--Ext Power/APU Switch, External/OFF/APU {-1, 0, 1}
+	[371] = "%1d",			--Battery Switch
 	
-	[133] = "%1d",			--Pilot left AMU LSK L1
-	[134] = "%1d",			--Pilot left AMU LSK L2
-	[135] = "%1d",			--Pilot left AMU LSK L3
-	[136] = "%1d",			--Pilot left AMU LSK L4
-	[137] = "%1d",			--Pilot left AMU LSK R1
-	[138] = "%1d",			--Pilot left AMU LSK R2
-	[139] = "%1d",			--Pilot left AMU LSK R3
-	[140] = "%1d",			--Pilot left AMU LSK R4
+	--ICE PROTECTION PANEL
+	[386] = "%1d",			--Propeller 1 Ice Protection Switch, OFF/AUTO/ON {-1, 0, 1}
+	[387] = "%1d",			--Propeller 2 Ice Protection Switch, OFF/AUTO/ON {-1, 0, 1}
+	[388] = "%1d",			--Propeller 3 Ice Protection Switch, OFF/AUTO/ON {-1, 0, 1}
+	[389] = "%1d",			--Propeller 4 Ice Protection Switch, OFF/AUTO/ON {-1, 0, 1}
+	[385] = "%1d",			--Engine Ice Protection Switch, OFF/AUTO/ON {-1, 0, 1}
+	[384] = "%1d",			--Wing/Empennage Ice Protection Switch, OFF/AUTO/ON {-1, 0, 1}
+	[382] = "%1d",			--Anti-Ice/De-Ice Switch, ANTI-ICE/DE-ICE {0, 1}
+	[378] = "%1d",			--Pilot Pitot Heat Switch, OFF/ON {0, 1}
+	[379] = "%1d",			--CoPilot Pitot Heat Switch, OFF/ON {0, 1}
+	[380] = "%1d",			--Center NESA Heat Switch, OFF/ON {0, 1}
+	[381] = "%1d",			--Side/Lower NESA Heat Switch, OFF/ON {0, 1}
 	
-	[141] = "%1d",			--Pilot Right AMU LSK L1
-	[142] = "%1d",			--Pilot Right AMU LSK L2
-	[143] = "%1d",			--Pilot Right AMU LSK L3
-	[144] = "%1d",			--Pilot Right AMU LSK L4
-	[145] = "%1d",			--Pilot Right AMU LSK R1
-	[146] = "%1d",			--Pilot Right AMU LSK R2
-	[147] = "%1d",			--Pilot Right AMU LSK R3
-	[148] = "%1d",			--Pilot Right AMU LSK R4
-	
-	[174] = "%1d",			--CoPilot left AMU LSK L1
-	[175] = "%1d",			--CoPilot left AMU LSK L2
-	[176] = "%1d",			--CoPilot left AMU LSK L3
-	[177] = "%1d",			--CoPilot left AMU LSK L4
-	[178] = "%1d",			--CoPilot left AMU LSK R1
-	[179] = "%1d",			--CoPilot left AMU LSK R2
-	[180] = "%1d",			--CoPilot left AMU LSK R3
-	[181] = "%1d",			--CoPilot left AMU LSK R4
-	
-	[182] = "%1d",			--CoPilot Right AMU LSK L1
-	[183] = "%1d",			--CoPilot Right AMU LSK L2
-	[184] = "%1d",			--CoPilot Right AMU LSK L3
-	[185] = "%1d",			--CoPilot Right AMU LSK L4
-	[186] = "%1d",			--CoPilot Right AMU LSK R1
-	[187] = "%1d",			--CoPilot Right AMU LSK R2
-	[188] = "%1d",			--CoPilot Right AMU LSK R3
-	[189] = "%1d",			--CoPilot Right AMU LSK R4
-	
-	--COMM NAV ECB PANEL
-	[159] = "%1d",			--CNBP COMM Key
-	[160] = "%1d",			--CNBP NAV Key
-	[161] = "%1d",			--CNBP ECB Key
-	
-	[151] = "%1d",			--CNBP LSK L1
-	[152] = "%1d",			--CNBP LSK L2
-	[153] = "%1d",			--CNBP LSK L3
-	[154] = "%1d",			--CNBP LSK L4
-	[155] = "%1d",			--CNBP LSK R1
-	[156] = "%1d",			--CNBP LSK R2
-	[157] = "%1d",			--CNBP LSK R4
-	[158] = "%1d",			--CNBP LSK R5
-	
-	[162] = "%1d",			--CNBP 1 Key
-	[163] = "%1d",			--CNBP 2 Key
-	[164] = "%1d",			--CNBP 3 Key
-	[165] = "%1d",			--CNBP 4 Key
-	[166] = "%1d",			--CNBP 5 Key
-	[167] = "%1d",			--CNBP 6 Key
-	[168] = "%1d",			--CNBP 7 Key
-	[169] = "%1d",			--CNBP 8 Key
-	[170] = "%1d",			--CNBP 9 Key
-	[171] = "%1d",			--CNBP Decimal Key
-	[172] = "%1d",			--CNBP 0 Key
-	
-	[173] = "%1d",			--CNBP CLR Key
-	[201] = "%1d",			--CNBP Brightness Rocker, DECREASE/NEUTRAL/INCREASE {-1, 0, 1}
-	
-	--Pilot CNI-MU Panel
-	[1100] = "%1d",			--Pilot CNI-MU LSK L1
-	[1101] = "%1d",			--Pilot CNI-MU LSK L2
-	[1102] = "%1d",			--Pilot CNI-MU LSK L3
-	[1103] = "%1d",			--Pilot CNI-MU LSK L4
-	[1104] = "%1d",			--Pilot CNI-MU LSK L5
-	[1105] = "%1d",			--Pilot CNI-MU LSK L6
-	[1106] = "%1d",			--Pilot CNI-MU LSK R1
-	[1107] = "%1d",			--Pilot CNI-MU LSK R2
-	[1108] = "%1d",			--Pilot CNI-MU LSK R3
-	[1109] = "%1d",			--Pilot CNI-MU LSK R4
-	[1110] = "%1d",			--Pilot CNI-MU LSK R5
-	[1111] = "%1d",			--Pilot CNI-MU LSK R6
-	
-	[1112] = "%1d",			--Pilot CNI-MU COMM TUNE Key
-	[1113] = "%1d",			--Pilot CNI-MU NAV TUNE Key
-	[1114] = "%1d",			--Pilot CNI-MU IFF Key
-	[1115] = "%1d",			--Pilot CNI-MU NAV CTRL Key
-	[1116] = "%1d",			--Pilot CNI-MU MSN Key
-	[1117] = "%1d",			--Pilot CNI-MU DIR INTC Key
-	[1118] = "%1d",			--Pilot CNI-MU TOLD Key
-	[1119] = "%1d",			--Pilot CNI-MU INDX Key
-	[1120] = "%1d",			--Pilot CNI-MU MC INDX TUNE Key
-	[1121] = "%1d",			--Pilot CNI-MU CAPS Key
-	[1122] = "%1d",			--Pilot CNI-MU EXEC Key
-	[1123] = "%1d",			--Pilot CNI-MU LEGS Key
-	[1124] = "%1d",			--Pilot CNI-MU MARK Key
-	[1125] = "%1d",			--Pilot CNI-MU PREV PAGE Key
-	[1126] = "%1d",			--Pilot CNI-MU NEXT PAGE Key
-	[1127] = "%0.1f",		--Pilot CNI-MU Brightness Rocker, DECREASE/NEUTRAL/INCREASE {0, 0.5, 1}
-	
-	[1137] = "%1d",			--Pilot CNI-MU 0 Key
-	[1128] = "%1d",			--Pilot CNI-MU 1 Key
-	[1129] = "%1d",			--Pilot CNI-MU 2 Key
-	[1130] = "%1d",			--Pilot CNI-MU 3 Key
-	[1131] = "%1d",			--Pilot CNI-MU 4 Key
-	[1132] = "%1d",			--Pilot CNI-MU 5 Key
-	[1133] = "%1d",			--Pilot CNI-MU 6 Key
-	[1134] = "%1d",			--Pilot CNI-MU 7 Key
-	[1135] = "%1d",			--Pilot CNI-MU 8 Key
-	[1136] = "%1d",			--Pilot CNI-MU 9 Key
-	[1138] = "%1d",			--Pilot CNI-MU Decimal Key
-	[1139] = "%1d",			--Pilot CNI-MU Minus Key
+	--BLEED AIR PANEL
+	[394] = "%1d",			--Left Wing Isolation Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
+	[395] = "%1d",			--Divider Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
+	[396] = "%1d",			--Right Wing Isolation Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
+	[390] = "%1d",			--Engine 1 Nacelle Shutoff Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
+	[391] = "%1d",			--Engine 2 Nacelle Shutoff Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
+	[392] = "%1d",			--Engine 3 Nacelle Shutoff Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
+	[393] = "%1d",			--Engine 4 Nacelle Shutoff Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
 
-	[1140] = "%1d",			--Pilot CNI-MU A Key
-	[1141] = "%1d",			--Pilot CNI-MU B Key
-	[1142] = "%1d",			--Pilot CNI-MU C Key
-	[1143] = "%1d",			--Pilot CNI-MU D Key
-	[1144] = "%1d",			--Pilot CNI-MU E Key
-	[1145] = "%1d",			--Pilot CNI-MU F Key
-	[1146] = "%1d",			--Pilot CNI-MU G Key
-	[1147] = "%1d",			--Pilot CNI-MU H Key
-	[1148] = "%1d",			--Pilot CNI-MU I Key
-	[1149] = "%1d",			--Pilot CNI-MU J Key
-	[1150] = "%1d",			--Pilot CNI-MU K Key
-	[1151] = "%1d",			--Pilot CNI-MU L Key
-	[1152] = "%1d",			--Pilot CNI-MU M Key
-	[1153] = "%1d",			--Pilot CNI-MU N Key
-	[1154] = "%1d",			--Pilot CNI-MU O Key
-	[1155] = "%1d",			--Pilot CNI-MU P Key
-	[1156] = "%1d",			--Pilot CNI-MU Q Key
-	[1157] = "%1d",			--Pilot CNI-MU R Key
-	[1158] = "%1d",			--Pilot CNI-MU S Key
-	[1159] = "%1d",			--Pilot CNI-MU T Key
-	[1160] = "%1d",			--Pilot CNI-MU U Key
-	[1161] = "%1d",			--Pilot CNI-MU V Key
-	[1162] = "%1d",			--Pilot CNI-MU W Key
-	[1163] = "%1d",			--Pilot CNI-MU X Key
-	[1164] = "%1d",			--Pilot CNI-MU Y Key
-	[1165] = "%1d",			--Pilot CNI-MU Z Key
-	[1167] = "%1d",			--Pilot CNI-MU DEL Key
-	[1169] = "%1d",			--Pilot CNI-MU CLR Key
-	[1166] = "%1d",			--Pilot CNI-MU Unused Key
-	[1168] = "%1d",			--Pilot CNI-MU Slash Key
+	--LANDING GEAR & LIGHTS PANEL
+	[126] = "%1d",			--Landing Gear Handle, DOWN/UP {0, 1}
+	[32] = "%1d",			--Left Landing Light Switch, OFF/ON {0, 1}
+	[33] = "%1d",			--Right Landing Light Switch, OFF/ON {0, 1}
+	[30] = "%1d",			--Left Landing Light Motor Switch, OFF/ON {0, 1}
+	[31] = "%1d",			--Right Landing Light Motor Switch, OFF/ON {0, 1}
+	[34] = "%1d",			--Taxi Lights Switch, OFF/ON {0, 1}
+	[35] = "%1d",			--Wingtip Taxi Lights Switch, OFF/ON {0, 1}
+	
+	--HYDRAULIC PANEL
+	[45] = "%1d",			--Auxiliary Hydraulic Pump Switch, OFF/ON {0, 1}
+	[37] = "%1d",			--Anti-Skid Switch, OFF/ON {0, 1}
+	
+	--RADAR PANEL
+	[485] = "%0.1f",		--Radar Master Power Switch, OFF/ON/TEST {0.0, 0.5, 1.0}
+	[485] = "%0.2f",		--Radar Master Power Switch, RM/CUR/SYM/VID {0.0, 0.33, 0.66, 1.0}
+	
+	--PILOT LIGHTING PANEL
+	[1337] = "%1d",			--Lighting Mode Master Switch, TSTORM/NORM/NVIS {-1, 0, 1}
+	[1335] = "%0.2f",		--Pilot Master Display Brightness Knob, Rotary {0, 1}
+	[1340] = "%0.2f",		--Cockpit Dome Lighting Brightness Knob, Rotary {0, 1}
+	[1342] = "%0.2f",		--Pilot Panel Backlighting Brightness Knob, Rotary {0, 1}
+	[1343] = "%0.2f",		--Pilot Panel Flood Lighting Brightness Knob, Rotary {0, 1}
+	[1341] = "%0.2f",		--Pilot Circuit Breaker Lighting Brightness Knob, Rotary {0, 1}
+	[1344] = "%0.2f",		--Floor Lighting Brightness Knob, Rotary {0, 1}
+	
+	--COPILOT LIGHTING PANEL
+	[1349] = "%0.2f",		--CoPilot Master Display Brightness Knob, Rotary {0, 1}
+	[1347] = "%0.2f",		--Overhead Panel Backlighting Brightness Knob, Rotary {0, 1}
+	[1346] = "%0.2f",		--Overhead Panel Flood Lighting Brightness Knob, Rotary {0, 1}
+	[1350] = "%0.2f",		--CoPilot Panel Backlighting Brightness Knob, Rotary {0, 1}
+	[1351] = "%0.2f",		--CoPilot Panel Flood Lighting Brightness Knob, Rotary {0, 1}
+	[1345] = "%0.2f",		--Copilot Circuit Breaker Lighting Brightness Knob, Rotary {0, 1}
+	[1348] = "%0.2f",		--Center Console Backlighting Brightness Knob, Rotary {0, 1}
+	
+	--PILOT ICS CONTROL PANEL
+	[293] = "%0.2f",		--Interphone Mode Switch, CALL/INT/VOX/HOT MIC {0.0, 0.33, 0.66, 1.0}
+	[294] = "%0.2f",		--Transmission Selector Switch, PA/INT/U1/U2/V1/V2/H1/H2/SAT/PVT {0.0, 0.1 Steps, 1.0}
+	[1355] = "%0.2f",		--Master Volume Knob, Rotary {0, 1}
+	[1354] = "%0.2f",		--VOX SENS Knob, Rotary {0, 1}
+	[1353] = "%0.2f",		--PA GAIN Knob, Rotary {0, 1}
+	[204] = "%1d",			--INT Volume Knob, IN/OUT {0, 1}
+	[205] = "%0.2f",		--INT Volume Knob, Rotary {0, 1}
+	[206] = "%1d",			--H1 Volume Knob, IN/OUT {0, 1}
+	[207] = "%0.2f",		--H1 Volume Knob, Rotary {0, 1}
+	[208] = "%1d",			--H2 Volume Knob, IN/OUT {0, 1}
+	[209] = "%0.2f",		--H2 Volume Knob, Rotary {0, 1}
+	[210] = "%1d",			--PA Volume Knob, IN/OUT {0, 1}
+	[211] = "%0.2f",		--PA Volume Knob, Rotary {0, 1}
+	[212] = "%1d",			--V1 Volume Knob, IN/OUT {0, 1}
+	[213] = "%0.2f",		--V1 Volume Knob, Rotary {0, 1}
+	[214] = "%1d",			--V2 Volume Knob, IN/OUT {0, 1}
+	[215] = "%0.2f",		--V2 Volume Knob, Rotary {0, 1}
+	[216] = "%1d",			--SAT Volume Knob, IN/OUT {0, 1}
+	[217] = "%0.2f",		--SAT Volume Knob, Rotary {0, 1}
+	[218] = "%1d",			--PVT Volume Knob, IN/OUT {0, 1}
+	[219] = "%0.2f",		--PVT Volume Knob, Rotary {0, 1}
+	[220] = "%1d",			--VOX/HM Volume Knob, IN/OUT {0, 1}
+	[221] = "%0.2f",		--VOX/HM Volume Knob, Rotary {0, 1}
+	[222] = "%1d",			--U1 Volume Knob, IN/OUT {0, 1}
+	[223] = "%0.2f",		--U1 Volume Knob, Rotary {0, 1}
+	[224] = "%1d",			--U2 Volume Knob, IN/OUT {0, 1}
+	[225] = "%0.2f",		--U2 Volume Knob, Rotary {0, 1}
+	
+	--COPILOT ICS CONTROL PANEL
+	[295] = "%0.2f",		--Interphone Mode Switch, CALL/INT/VOX/HOT MIC {0.0, 0.33, 0.66, 1.0}
+	[296] = "%0.2f",		--Transmission Selector Switch, PA/INT/U1/U2/V1/V2/H1/H2/SAT/PVT {0.0, 0.1 Steps, 1.0}
+	[1358] = "%0.2f",		--Master Volume Knob, Rotary {0, 1}
+	[1357] = "%0.2f",		--VOX SENS Knob, Rotary {0, 1}
+	[1356] = "%0.2f",		--PA GAIN Knob, Rotary {0, 1}
+	[226] = "%1d",			--INT Volume Knob, IN/OUT {0, 1}
+	[227] = "%0.2f",		--INT Volume Knob, Rotary {0, 1}
+	[228] = "%1d",			--H1 Volume Knob, IN/OUT {0, 1}
+	[229] = "%0.2f",		--H1 Volume Knob, Rotary {0, 1}
+	[230] = "%1d",			--H2 Volume Knob, IN/OUT {0, 1}
+	[231] = "%0.2f",		--H2 Volume Knob, Rotary {0, 1}
+	[232] = "%1d",			--PA Volume Knob, IN/OUT {0, 1}
+	[233] = "%0.2f",		--PA Volume Knob, Rotary {0, 1}
+	[234] = "%1d",			--V1 Volume Knob, IN/OUT {0, 1}
+	[235] = "%0.2f",		--V1 Volume Knob, Rotary {0, 1}
+	[236] = "%1d",			--V2 Volume Knob, IN/OUT {0, 1}
+	[237] = "%0.2f",		--V2 Volume Knob, Rotary {0, 1}
+	[238] = "%1d",			--SAT Volume Knob, IN/OUT {0, 1}
+	[239] = "%0.2f",		--SAT Volume Knob, Rotary {0, 1}
+	[240] = "%1d",			--PVT Volume Knob, IN/OUT {0, 1}
+	[241] = "%0.2f",		--PVT Volume Knob, Rotary {0, 1}
+	[242] = "%1d",			--VOX/HM Volume Knob, IN/OUT {0, 1}
+	[243] = "%0.2f",		--VOX/HM Volume Knob, Rotary {0, 1}
+	[244] = "%1d",			--U1 Volume Knob, IN/OUT {0, 1}
+	[245] = "%0.2f",		--U1 Volume Knob, Rotary {0, 1}
+	[246] = "%1d",			--U2 Volume Knob, IN/OUT {0, 1}
+	[247] = "%0.2f",		--U2 Volume Knob, Rotary {0, 1}
+	
+	--AFCS PANEL
+	[71] = "%0.2f",			--AFCS Pitch Control Wheel, Rotary {0, 1}
+	[70] = "%0.2f",			--AFCS Turn Control Knob / Center Detent, Rotary {-1, 1}
+	[52] = "%1d",			--Pilot AFCS Engage Switch, DISENGAGE/ENGAGE {0, 1}
+	[53] = "%1d",			--Copilot AFCS Engage Switch, DISENGAGE/ENGAGE {0, 1}
+	
+	--AERIAL DELIVERY PANEL
+	[76] = "%1d",			--Chute Release Button Cover, CLOSED/OPEN {0, 1}
+	[478] = "%1d",			--Air Deflector Control Switch, CLOSE/OPEN {0, 1}
+	[474] = "%0.1f",		--Computer Drop Switch, MANUAL/AD-MAN TJ-AUTO/AUTO {0, 0.5, 1}
+	[479] = "%1d",			--Ramp/Door Control Switch, CLOSE/OFF/OPEN {-1, 0, 1}
+	
+	--TRIM ELEVATOR TAB
+	[1334] = "%1d",			--Elevator Trim Tab Power Switch, EMER/OFF/NORM {-1, 0, 1}
+	
+	--CURSOR CONTROL PANEL
+	[65] = "%0.1f",			--Cursor Priority Switch, P/3RD/CP {0, 0.5, 1}
+	[72] = "%0.2f",			--Cursor Display Select Switch, 1/2/3/4/OFF/NA/NA {0, 0.16 Steps, 1}
+	
+	--DEFENSIVE SYSTEMS PANEL
+	[59] = "%1d",			--CMS Jettison Switch Guard, CLOSED/OPEN {0, 1}
+	[61] = "%1d",			--Defensive Systems Master Switch, STBY/OPR {0, 1}
+	[62] = "%1d",			--ECM Master Switch, STBY/OPR {0, 1}
+	[63] = "%1d",			--IRCM Master Switch, STBY/OPR {0, 1}
+	[64] = "%0.1f",			--MAN PRGMS Switch, 6/5/1-4 {0, 0.5, 1}
+	[74] = "%0.2f",			--CMDS Mode Selector, STBY/MAN/SEMI/AUTO/BYP {0, 0.25 Steps, 1}
+	
+	--FLAPS
+	[16] = "%0.2f",			--Flap Control Lever, Slider {0, 0.05 Steps, 1}	
+	
+	--ARC-210 RCU
+	[543] = "%0.2f",		--Operational Mode Switch, OFF/TR+G/TR/ADF/CHG PRST/TEST/ZERO(PULL) {0, 0.16 Steps, 1}
+	[545] = "%0.2f",		--Frequency Mode Switch, ECCM MASTER/ECCM/PRST/MAN/MAR/243/121(PULL) {0, 0.16 Steps, 1}
+	[532] = "%1d",			--Squelch Switch, OFF/ON {-1, 1}
+	
+	--PILOT REF/MODE SELECT PANEL
+	[110] = "%0.1f",		--Pilot Reference Select Switch, HP/RAD ALT/IAS/FPA/MINS {-0.8, -0.4, 0.0, 0.4, 0.8}
+	
+	--EXTERIOR LIGHTING PANEL
+	[424] = "%0.1f",		--Covert/Formation Light Brightness Control, Rotary {0, 1}
+	[421] = "%1d",			--Exterior Lighting Master Switch, NORM/COVERT {0, 1}
+	[422] = "%1d",			--Navigation Light Mode Switch, STEADY/OFF/FLASH {-1, 0, 1}
+	[423] = "%1d",			--Navigation Light Brightness Switch, BRIGHT/DIM {0, 1}
+	[418] = "%1d",			--Top Strobe Light Switch, RED/OFF/WHT {-1, 0, 1}
+	[419] = "%1d",			--Bottom Strobe Light Switch, RED/OFF/WHT {-1, 0, 1}
+	[417] = "%1d",			--Leading Edge Light Switch, OFF/ON {0, 1}
 }
 
 -----------------------------
@@ -325,38 +358,168 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 	
 	
 	
-	   
+	local lTEMP   
 	   
 	--uncomment to split line list length and values to log
 	--[[
-	local lTEST = splitLines(list_indication(18))
-	--ExportScript.Tools.WriteToLog(ExportScript.Tools.dump(lTEST))
-	
-	local lParams = list_cockpit_params()
-	ExportScript.Tools.WriteToLog("MASTER_AV_STATE - "..getIndexValue(lParams, "MASTER_AV_STATE"))
-	ExportScript.Tools.WriteToLog("AUTONAV_STATE - "..getIndexValue(lParams, "AUTONAV_STATE"))
-	ExportScript.Tools.WriteToLog(lParams)
-	
-	--ExportScript.Tools.WriteToLog('TEST: '..ExportScript.Tools.dump(list_indication(22)))		--uncomment to output to log raw list before splitting lines
-	
-	ExportScript.Tools.WriteToLog('\nlTEST Length: ' .. #lTEST)
+	lTEMP = splitLines(list_indication(24))
 
-	for i=1, #lTEST, 1 do
-		if lTEST ~= nil and lTEST[i] ~= nil then
-			ExportScript.Tools.WriteToLog('Index:'.. i .. '   Value:' .. lTEST[i])
+	ExportScript.Tools.WriteToLog('\nlTEMP Length: ' .. #lTEMP)
+
+	for i=1, #lTEMP, 1 do
+		if lTEMP ~= nil and lTEMP[i] ~= nil then
+			ExportScript.Tools.WriteToLog('Index:'.. i .. '   Value:' .. lTEMP[i])
 		end
 	end
-	lTEST = splitLines(list_indication(19))
-	for i=1, #lTEST, 1 do
-		if lTEST ~= nil and lTEST[i] ~= nil then
-			ExportScript.Tools.WriteToLog('Index:'.. i .. '   Value:' .. lTEST[i])
-		end
-	end
-	
 	]]
+	
+	
+	---------- ELECTRICAL PANEL ----------
+	local lTEMP = splitLines(list_indication(23))
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(23001, lTEMP[2]..lTEMP[3]..lTEMP[4])
+	else
+		ExportScript.Tools.SendData(23001, "")
+	end
+	
+		---------- BLEED AIR PANEL ----------
+	lTEMP = splitLines(list_indication(35))
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(35001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(35001, "")
+	end
+	
+		---------- PRESSURIZATION PANEL ----------
+	lTEMP = splitLines(list_indication(38)) 		--RATE
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(38001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(38001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(39)) 		--CABIN ALT
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(39001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(39001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(40)) 		--DIF PRESS
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(40001, lTEMP[2]..lTEMP[3]..lTEMP[4])
+	else
+		ExportScript.Tools.SendData(40001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(41)) 		--LDG/CONST
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(41001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(41001, "")
+	end
+	
+		---------- FUEL PANEL ----------
+	lTEMP = splitLines(list_indication(24))			--TOTAL QTY
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(24001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(24001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(25))			--1 Main
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(25001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(25001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(26))			--2 Main
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(26001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(26001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(27))			--3 Main
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(27001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(27001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(28))			--4 Main
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(28001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(28001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(29))			--L AUX
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(29001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(29001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(30))			--R AUX
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(30001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(30001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(31))			--L EXT
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(31001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(31001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(32))			--R EXT
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(32001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(32001, "")
+	end
+	
+	lTEMP = splitLines(list_indication(42))			--FUEL PRESS
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(42001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(42001, "")
+	end
+
+		---------- AIR COND PANEL ----------
+	lTEMP = splitLines(list_indication(36))			--FLT STA
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(36001, lTEMP[2])--ACTUAL
+		ExportScript.Tools.SendData(36002, lTEMP[3])--SET
+	else
+		ExportScript.Tools.SendData(36001, "")	
+		ExportScript.Tools.SendData(36002, "")
+	end
+	
+	lTEMP = splitLines(list_indication(37))			--CARGO COMPT
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(37001, lTEMP[2])--ACTUAL
+		ExportScript.Tools.SendData(37002, lTEMP[3])--SET
+	else
+		ExportScript.Tools.SendData(37001, "")
+		ExportScript.Tools.SendData(37002, "")
+	end
+	
+		---------- HYDRAULIC PANEL ----------
+	lTEMP = splitLines(list_indication(43))			--Aux Hydraulic Pressure
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(43001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(43001, "")	
+	end
+	
+	
+	---------- CNBP ----------
 	local lCNBP = splitLines(list_indication(22))
-	
-	
 	if lCNBP ~= nil and lCNBP[12] == "COMM" then																--COMM PAGE
 		ExportScript.Tools.SendData(22001, "COMM")
 		ExportScript.Tools.SendData(22002, string.sub(lCNBP[3], 1, 2) .. "\n" .. string.sub(lCNBP[3], 3))		--L1 = U1 + Freq
@@ -411,11 +574,11 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 		end
 	end
 	
-	--Pilot AMU
+	---------- LEFT SEAT AMU ----------
 	local lAMUL = splitLines(list_indication(18))
 	local lAMUR = splitLines(list_indication(19))
 	
-	--Left AMU
+	--Left Seat Left AMU
 	if lAMUL ~= nil then
 		-- STEP 1: Format by page
 		if lAMUL[2] == "MAIN MENU" then
@@ -659,7 +822,7 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 
 
 
-	--Right AMU
+	--Left Seat Right AMU
 	if lAMUR ~= nil then
 		-- STEP 1: Format by page
 		if lAMUL[2] == "MAIN MENU" and lAMUR[2] == "MAIN MENU" then
@@ -894,5 +1057,4 @@ function ExportScript.ListIndicationLogDump(mainPanelDevice) -- list_indication 
         ExportScript.Tools.WriteToLog(ltmp2..': '..ExportScript.Tools.dump(ltmp1))
     end
 end
-
 
