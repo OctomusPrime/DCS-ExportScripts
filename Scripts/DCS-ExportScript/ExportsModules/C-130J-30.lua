@@ -80,6 +80,10 @@ ExportScript.ConfigEveryFrameArguments =
 	[129] = "%1d",   <- decimal number
 	  [5] = "%.f",   <- floating point number rounded to a decimal number
 	]]
+	
+	
+	[4045] = "%1d", -- MASTER WARNING light
+	[4046] = "%1d", -- MASTER CAUTION light
 }
 ExportScript.ConfigArguments = 
 {
@@ -87,6 +91,20 @@ ExportScript.ConfigArguments =
 	arguments for export in low tick interval
 	based on "clickabledata.lua"
 	]]
+	
+	--INDICATOR LIGHTS
+	[4047] = "%0.1f", 		-- ALT ON light
+	[4049] = "%0.1f", 		-- SEL ON light
+	[4051] = "%0.1f", 		-- HDG ON light
+	[4052] = "%0.1f", 		-- NAV ON light
+	[4054] = "%0.1f", 		-- APPR ON light
+	[4048] = "%0.1f", 		-- VS ON light	
+	[4050] = "%0.1f", 		-- IAS ON light	
+	[4053] = "%0.1f", 		-- CAPS ON light	
+	[4055] = "%0.1f", 		-- A/T ON light
+	[4075] = "%1d", 		-- RAMP/DOOR "FULL" light
+	[4095] = "%1d", 		-- ADS CAUTION light
+	[4096] = "%1d", 		-- ADS JUMP light
 	
 	--FIRE HANDLES
 	[314] = "%1d",			--Engine 1 Fire Handle, push/pull {0,1}
@@ -373,9 +391,8 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 	end
 	]]
 	
-	
 	---------- ELECTRICAL PANEL ----------
-	local lTEMP = splitLines(list_indication(23))
+	lTEMP = splitLines(list_indication(23))
 	if lTEMP ~= nil then
 		ExportScript.Tools.SendData(23001, lTEMP[2]..lTEMP[3]..lTEMP[4])
 	else
