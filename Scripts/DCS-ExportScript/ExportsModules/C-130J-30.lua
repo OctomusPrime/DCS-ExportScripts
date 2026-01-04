@@ -93,18 +93,152 @@ ExportScript.ConfigArguments =
 	]]
 	
 	--INDICATOR LIGHTS
+	--Unable to find Landing Light Extension Indicator Lights
+	
+	[3990] = "%0.1f", 		-- P CNI-MU EXE light
+	[3992] = "%0.1f", 		-- CP CNI-MU EXE light
+	[3994] = "%0.1f", 		-- AUG CNI-MU EXE light
+		
+	[4011] = "%0.1f", 		-- P HUD VIS light
+	[4012] = "%0.1f", 		-- P HUD CAT 2 light
+	[4013] = "%0.1f", 		-- P HUD O/S light
+	[4014] = "%0.1f", 		-- P HUD UNCG light
+	[4015] = "%0.1f", 		-- P HUD NAV light
+	[4016] = "%0.1f", 		-- P HUD TACT light
+	
+	[4017] = "%0.1f", 		-- CP HUD VIS light
+	[4018] = "%0.1f", 		-- CP HUD CAT 2 light
+	[4019] = "%0.1f", 		-- CP HUD O/S light
+	[4020] = "%0.1f", 		-- CP HUD UNCG light
+	[4021] = "%0.1f", 		-- CP HUD NAV light
+	[4022] = "%0.1f", 		-- CP HUD TACT light
+	
+	[4023] = "%0.1f", 		-- ENG 1 START light
+	[4024] = "%0.1f", 		-- ENG 2 START light
+	[4025] = "%0.1f", 		-- ENG 3 START light
+	[4026] = "%0.1f", 		-- ENG 4 START light
+	[4027] = "%0.1f", 		-- APU START light
+	
+	[4028] = "%0.1f", 		-- SPR DRAIN light
+	
+	[4032] = "%0.1f", 		-- NLG Locked light
+	[4033] = "%0.1f", 		-- L MLG Locked light
+	[4034] = "%0.1f", 		-- R MLG Locked light
+	[4035] = "%0.1f", 		-- Gear Handle light
+	
+	[4036] = "%0.1f", 		-- GEN 1 light
+	[4037] = "%0.1f", 		-- GEN 2 light
+	[4038] = "%0.1f", 		-- GEN 3 light
+	[4039] = "%0.1f", 		-- GEN 4 light
+	
+	[4041] = "%0.1f", 		-- AUX Pump light
+	
 	[4047] = "%0.1f", 		-- ALT ON light
+	[4048] = "%0.1f", 		-- VS ON light	
 	[4049] = "%0.1f", 		-- SEL ON light
+	[4050] = "%0.1f", 		-- IAS ON light	
 	[4051] = "%0.1f", 		-- HDG ON light
 	[4052] = "%0.1f", 		-- NAV ON light
+	[4053] = "%0.1f", 		-- CAPS ON light
 	[4054] = "%0.1f", 		-- APPR ON light
-	[4048] = "%0.1f", 		-- VS ON light	
-	[4050] = "%0.1f", 		-- IAS ON light	
-	[4053] = "%0.1f", 		-- CAPS ON light	
 	[4055] = "%0.1f", 		-- A/T ON light
-	[4075] = "%1d", 		-- RAMP/DOOR "FULL" light
-	[4095] = "%1d", 		-- ADS CAUTION light
-	[4096] = "%1d", 		-- ADS JUMP light
+	
+	[4056] = "%0.1f", 		-- P AP ON Annunciator
+	[4057] = "%0.1f", 		-- P PTCH OFF Annunciator
+	[4058] = "%0.1f", 		-- P NAV ARM Annunciator
+	[4059] = "%0.1f", 		-- P GS ARM Annunciator
+	[4060] = "%0.1f", 		-- P GO ARND Annunciator
+	[4061] = "%0.1f", 		-- P CAT2 ARM Annunciator
+	[4062] = "%0.1f", 		-- P AP DSGN Annunciator
+	[4063] = "%0.1f", 		-- P LAT OFF Annunciator
+	[4064] = "%0.1f", 		-- P NAV CAPT Annunciator
+	[4065] = "%0.1f", 		-- P GS CAPT Annunciator
+	[4066] = "%0.1f", 		-- P BACK LOC Annunciator
+	[4067] = "%0.1f", 		-- P CAT2 Annunciator
+	
+	[4068] = "%0.1f", 		-- EMER BRAKE SEL light
+	[4069] = "%0.1f", 		-- Engine Pump 1 light
+	[4070] = "%0.1f", 		-- Engine Pump 2 light
+	[4071] = "%0.1f", 		-- Engine Pump 3 light
+	[4072] = "%0.1f", 		-- Engine Pump 4 light
+	[4073] = "%0.1f", 		-- Suction Boost Util Pump light
+	[4074] = "%0.1f", 		-- Suction Boost Pump light
+	
+	[4075] = "%0.1f", 		-- ADS RAMP/DOOR FULL Light
+	
+	[4077] = "%0.1f", 		-- LPCR PRCN light
+	[4078] = "%0.1f", 		-- LPCR MAP light
+	[4079] = "%0.1f", 		-- LPCR WX light
+	[4080] = "%0.1f", 		-- LPCR SP light
+	[4081] = "%0.1f", 		-- LPCR MGM light
+	[4082] = "%0.1f", 		-- LPCR WS light
+	[4083] = "%0.1f", 		-- LPCR BCN light
+	[4084] = "%0.1f", 		-- LPCR PSEL light
+	[4085] = "%0.1f", 		-- LPCR OFS light
+	[4086] = "%0.1f", 		-- LPCR FRZ light
+	[4087] = "%0.1f", 		-- LPCR PEN light
+	[4088] = "%0.1f", 		-- LPCR SCTR light
+	
+	[4089] = "%0.1f", 		-- AFCS PITCH OFF light
+	[4090] = "%0.1f", 		-- AFCS LAT OFF light
+	
+	[4091] = "%0.1f", 		-- ENG 1 LSGI light
+	[4092] = "%0.1f", 		-- ENG 2 LSGI light
+	[4093] = "%0.1f", 		-- ENG 3 LSGI light
+	[4094] = "%0.1f", 		-- ENG 4 LSGI light
+	
+	[4095] = "%0.1f", 		-- ADS CAUTION light
+	[4096] = "%0.1f", 		-- ADS JUMP light
+	
+	[4097] = "%0.1f", 		-- RWR SRCH light
+	[4098] = "%0.1f", 		-- RWR MODE light
+	[4099] = "%0.1f", 		-- RWR HAND OFF light
+	[4100] = "%0.1f", 		-- RWR ALT light
+	[4101] = "%0.1f", 		-- RWR TGT SEP light
+	
+	[4102] = "%0.1f", 		-- AIR COND FLT STA POWER light
+	[4103] = "%0.1f", 		-- AIR COND CARGO COMPT POWER light
+	[4104] = "%0.1f", 		-- AIR COND FLT STA MAN light
+	[4105] = "%0.1f", 		-- AIR COND CARGO COMPT MAN light
+	[4106] = "%0.1f", 		-- AIR COND CROSS FLOW VALVE MAN light
+	
+	[4107] = "%0.1f", 		-- FUEL PANEL FLCV light
+	
+	[4108] = "%0.1f", 		-- BLEED AIR PANEL APU OPEN light
+	
+	[4114] = "%0.1f", 		-- CP AP ON Annunciator
+	[4115] = "%0.1f", 		-- CP PTCH OFF Annunciator
+	[4116] = "%0.1f", 		-- CP NAV ARM Annunciator
+	[4117] = "%0.1f", 		-- CP GS ARM Annunciator
+	[4118] = "%0.1f", 		-- CP GO ARND Annunciator
+	[4119] = "%0.1f", 		-- CP CAT2 ARM Annunciator
+	[4120] = "%0.1f", 		-- CP AP DSGN Annunciator
+	[4121] = "%0.1f", 		-- CP LAT OFF Annunciator
+	[4122] = "%0.1f", 		-- CP NAV CAPT Annunciator
+	[4123] = "%0.1f", 		-- CP GS CAPT Annunciator
+	[4124] = "%0.1f", 		-- CP BACK LOC Annunciator
+	[4125] = "%0.1f", 		-- CP CAT2 Annunciator
+	
+	[4131] = "%1d", 		-- FIRE HANDLE ENG 1 light
+	[4132] = "%1d", 		-- FIRE HANDLE ENG 2 light
+	[4133] = "%1d", 		-- FIRE HANDLE ENG 3 light
+	[4134] = "%1d", 		-- FIRE HANDLE ENG 4 light
+	[4135] = "%1d", 		-- FIRE HANDLE APU light
+	
+	[4137] = "%0.1f", 		-- P CNI-MU DSPY light
+	[4138] = "%0.1f", 		-- P CNI-MU MSG light
+	[4139] = "%0.1f", 		-- P CNI-MU FAIL light
+	[4140] = "%0.1f", 		-- P CNI-MU OFST light
+	[4141] = "%0.1f", 		-- CP CNI-MU DSPY light
+	[4142] = "%0.1f", 		-- CP CNI-MU MSG light
+	[4143] = "%0.1f", 		-- CP CNI-MU FAIL light
+	[4144] = "%0.1f", 		-- CP CNI-MU OFST light
+	[4145] = "%0.1f", 		-- AUG CNI-MU DSPY light
+	[4146] = "%0.1f", 		-- AUG CNI-MU MSG light
+	[4147] = "%0.1f", 		-- AUG CNI-MU FAIL light
+	[4148] = "%0.1f", 		-- AUG CNI-MU OFST light
+	
+	
 	
 	--FIRE HANDLES
 	[314] = "%1d",			--Engine 1 Fire Handle, push/pull {0,1}
@@ -174,8 +308,8 @@ ExportScript.ConfigArguments =
 	[126] = "%1d",			--Landing Gear Handle, DOWN/UP {0, 1}
 	[32] = "%1d",			--Left Landing Light Switch, OFF/ON {0, 1}
 	[33] = "%1d",			--Right Landing Light Switch, OFF/ON {0, 1}
-	[30] = "%1d",			--Left Landing Light Motor Switch, OFF/ON {0, 1}
-	[31] = "%1d",			--Right Landing Light Motor Switch, OFF/ON {0, 1}
+	[30] = "%1d",			--Left Landing Light Motor Switch, RETRACT/HOLD/EXTEND {-1, 0, 1}
+	[31] = "%1d",			--Right Landing Light Motor Switch, RETRACT/HOLD/EXTEND {-1, 0, 1}
 	[34] = "%1d",			--Taxi Lights Switch, OFF/ON {0, 1}
 	[35] = "%1d",			--Wingtip Taxi Lights Switch, OFF/ON {0, 1}
 	
@@ -309,6 +443,27 @@ ExportScript.ConfigArguments =
 	[418] = "%1d",			--Top Strobe Light Switch, RED/OFF/WHT {-1, 0, 1}
 	[419] = "%1d",			--Bottom Strobe Light Switch, RED/OFF/WHT {-1, 0, 1}
 	[417] = "%1d",			--Leading Edge Light Switch, OFF/ON {0, 1}
+	
+	--FADEC PANEL
+	[328] = "%1d",			--Engine 1 FADEC Switch Guard, OPEN/CLOSED {0, 1}
+	[329] = "%1d",			--Engine 2 FADEC Switch Guard, OPEN/CLOSED {0, 1}
+	[330] = "%1d",			--Engine 3 FADEC Switch Guard, OPEN/CLOSED {0, 1}
+	[331] = "%1d",			--Engine 4 FADEC Switch Guard, OPEN/CLOSED {0, 1}
+	[327] = "%1d",			--ATCS Switch Guard, OPEN/CLOSED {0, 1}
+	[416] = "%1d",			--ATCS Switch, OFF/ON {0, 1}
+	[372] = "%1d",			--Propeller 1 Control Switch, UNFEATHER/NORM/FEATHER {-1, 0, 1}
+	[373] = "%1d",			--Propeller 2 Control Switch, UNFEATHER/NORM/FEATHER {-1, 0, 1}
+	[374] = "%1d",			--Propeller 3 Control Switch, UNFEATHER/NORM/FEATHER {-1, 0, 1}
+	[375] = "%1d",			--Propeller 4 Control Switch, UNFEATHER/NORM/FEATHER {-1, 0, 1}
+	[376] = "%1d",			--Prop Sync Switch, OFF/ON {0, 1}
+	
+	--PRESSURIZATION PANEL
+	[1333] = "%0.2f",		--Pressurization Rate Control Knob, MIN/NORM/MAX {0, continuous, 1}
+	[1332] = "%0.2f",		--Pressurization Rate Control Knob, MIN/NORM/MAX {0, continuous, 1}
+	[468] = "%0.2f",		--Pressurization Mode Switch, CONST ALT/MAN/AUTO/NO PRESS/AUX VENT {-0.8, -0.4, 0.0, 0.4, 0.8}
+	[334] = "%1d",			--Emergency Depressurize Switch Guard, CLOSED/OPEN {0, 1}
+	[1363] = "%1d",			--Emergency Depressurize Switch, NORM/DUMP {0, 1}
+	
 }
 
 -----------------------------
@@ -378,6 +533,7 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 	
 	local lTEMP   
 	   
+	
 	--uncomment to split line list length and values to log
 	--[[
 	lTEMP = splitLines(list_indication(24))
