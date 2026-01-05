@@ -561,7 +561,7 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 	   
 	
 	--uncomment to split line list length and values to log
-	
+	--[[
 	lTEMP = splitLines(list_indication(24))
 
 	ExportScript.Tools.WriteToLog('\nlTEMP Length: ' .. #lTEMP)
@@ -571,6 +571,7 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 			ExportScript.Tools.WriteToLog('Index:'.. i .. '   Value:' .. lTEMP[i])
 		end
 	end
+	]]
 	
 	---------- ELECTRICAL PANEL ----------
 	lTEMP = splitLines(list_indication(23))
