@@ -1,3 +1,9 @@
+ADDS SUPPORT FOR THE C-130J
+
+ORIGINAL README FOLLOWS
+
+
+
 # Community DCS-ExportScripts Library
 ---
 
