@@ -460,8 +460,9 @@ ExportScript.ConfigArguments =
 	[545] = "%0.2f",		--Frequency Mode Switch, ECCM MASTER/ECCM/PRST/MAN/MAR/243/121(PULL) {0, 0.16 Steps, 1}
 	[532] = "%1d",			--Squelch Switch, OFF/ON {-1, 1}
 	
-	--PILOT REF/MODE SELECT PANEL
+	--REF/MODE SELECT PANEL
 	[110] = "%0.1f",		--Pilot Reference Select Switch, HP/RAD ALT/IAS/FPA/MINS {-0.8, -0.4, 0.0, 0.4, 0.8}
+	[111] = "%0.1f",		--CoPilot Reference Select Switch, HP/RAD ALT/I◘AS/FPA/MINS {-0.8, -0.4, 0.0, 0.4, 0.8}
 	
 	--EXTERIOR LIGHTING PANEL
 	[424] = "%0.1f",		--Covert/Formation Light Brightness Control, Rotary {0, 1}
@@ -1179,7 +1180,413 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 		end
 	end
 
+	---------- RIGHT SEAT AMU ----------
+	local lAMUL = splitLines(list_indication(20))
+	local lAMUR = splitLines(list_indication(21))
 	
+	--Right Seat Left AMU
+	if lAMUL ~= nil then
+		-- STEP 1: Format by page
+		if lAMUL[2] == "MAIN MENU" then
+			table.insert(lAMUL, 6, "")
+		elseif lAMUL[2] == "PFD" then
+			lAMUL[3] = "PILOT\n/COPILOT"
+			lAMUL[6] = "BARO\nIN/MB"
+			lAMUL[10] = "MAG/TRUE\n/GRID"
+			lAMUL[15] = "FD\nSOURCE\nP/CP"
+			lAMUL[22] = "ATT REF\nINU 1/2"
+			lAMUL[26] = "CADC\n1/2"
+			lAMUL[30] = "RAD ALT\n1/2"
+			table.remove(lAMUL, 29)
+			table.remove(lAMUL, 28)
+			table.remove(lAMUL, 27)
+			table.remove(lAMUL, 25)
+			table.remove(lAMUL, 24)
+			table.remove(lAMUL, 23)
+			table.remove(lAMUL, 21)
+			table.remove(lAMUL, 20)
+			table.remove(lAMUL, 19)
+			table.remove(lAMUL, 18)
+			table.remove(lAMUL, 17)
+			table.remove(lAMUL, 16)
+			table.remove(lAMUL, 14)
+			table.remove(lAMUL, 13)
+			table.remove(lAMUL, 12)
+			table.remove(lAMUL, 11)
+			table.remove(lAMUL, 9)
+			table.remove(lAMUL, 8)
+			table.remove(lAMUL, 7)
+			table.remove(lAMUL, 5)
+			table.remove(lAMUL, 4)
+		elseif lAMUL[2] == "ENGINE" then
+			lAMUL[3] = "<ENG\nDIAGNOSTICS"
+			lAMUL[5] = "EMS DATA\nDOWNLOAD"
+			lAMUL[6] = "EMS EVENT\nRECORD"
+			table.insert(lAMUL, 7, "")
+			table.insert(lAMUL, 8, "")
+		elseif lAMUL[2] == "ENGINE DIAGNOSTICS" then
+			table.insert(lAMUL, 5, "")
+			table.insert(lAMUL, 7, "")
+			table.insert(lAMUL, 8, "")
+		elseif lAMUL[2] == "CAPS DISPLAY" then
+			lAMUL[3] = "<PFD\nSYMBOLOGY"
+			lAMUL[4] = "CENTER\n/UP/DOWN"
+			lAMUL[9] = "MAG/TRUE\n/GRID"
+			lAMUL[14] = string.gsub(lAMUL[14], " ", "\n", 2)
+			table.insert(lAMUL, 14, "")
+			table.remove(lAMUL, 13)
+			table.remove(lAMUL, 12)
+			table.remove(lAMUL, 11)
+			table.remove(lAMUL, 10)
+			table.remove(lAMUL, 8)
+			table.remove(lAMUL, 7)
+			table.remove(lAMUL, 6)
+			table.remove(lAMUL, 5)
+		elseif lAMUL[4] == "NAV-RADAR DISPLAY" then
+			lAMUL[5] = "FULL\n/PART"
+			lAMUL[8] = "CENTER\n/OFFSET"
+			lAMUL[11] = "MAG/TRUE\n/GRID"
+			lAMUL[16] = "HDG\n/TK/N"
+			table.insert(lAMUL, 21, "RANGE\n"..lAMUL[2])
+			table.remove(lAMUL, 20)
+			table.remove(lAMUL, 19)
+			table.remove(lAMUL, 18)
+			table.remove(lAMUL, 17)
+			table.remove(lAMUL, 15)
+			table.remove(lAMUL, 14)
+			table.remove(lAMUL, 13)
+			table.remove(lAMUL, 12)
+			table.remove(lAMUL, 10)
+			table.remove(lAMUL, 9)
+			table.remove(lAMUL, 7)
+			table.remove(lAMUL, 6)
+			table.remove(lAMUL, 2)
+			table.remove(lAMUL, 1)
+		elseif lAMUL[3] == "NAV-RADAR DISPLAY" then
+			lAMUL[4] = "FULL\n/PART"
+			lAMUL[7] = "CENTER\n/OFFSET"
+			lAMUL[10] = "MAG/TRUE\n/GRID"
+			lAMUL[15] = "HDG\n/TK/N"
+			table.insert(lAMUL, 20, "RANGE\n".. string.gsub(lAMUL[1], "^RANGE%s*", ""))
+			table.remove(lAMUL, 19)
+			table.remove(lAMUL, 18)
+			table.remove(lAMUL, 17)
+			table.remove(lAMUL, 16)
+			table.remove(lAMUL, 14)
+			table.remove(lAMUL, 13)
+			table.remove(lAMUL, 12)
+			table.remove(lAMUL, 11)
+			table.remove(lAMUL, 9)
+			table.remove(lAMUL, 8)
+			table.remove(lAMUL, 6)
+			table.remove(lAMUL, 5)
+			table.remove(lAMUL, 1)
+		elseif lAMUL[2] == "SYS STATUS DISPLAY" then
+			table.insert(lAMUL, 3, "")
+			table.insert(lAMUL, 4, "")
+			table.insert(lAMUL, 5, "")
+			table.insert(lAMUL, 6, "")
+			table.insert(lAMUL, 7, "")
+			table.insert(lAMUL, 8, "")
+		elseif lAMUL[2] == "DIG MAP DISPLAY" then
+			lAMUL[3] = "<MAP\nCOVERAGE"
+			lAMUL[4] = "CENTER\n/OFFSET"
+			lAMUL[7] = "MAG/TRUE\n/GRID"
+			lAMUL[12] = "HDG\n/NORTH\nUP"
+			lAMUL[15] = "WHT/YEL\n/MGN/BLK"
+			table.remove(lAMUL, 21)
+			table.remove(lAMUL, 20)
+			table.remove(lAMUL, 19)
+			table.remove(lAMUL, 18)
+			table.remove(lAMUL, 17)
+			table.remove(lAMUL, 16)
+			table.remove(lAMUL, 14)
+			table.remove(lAMUL, 13)
+			table.remove(lAMUL, 11)
+			table.remove(lAMUL, 10)
+			table.remove(lAMUL, 9)
+			table.remove(lAMUL, 8)
+			table.remove(lAMUL, 6)
+			table.remove(lAMUL, 5)
+		elseif lAMUL[4] == "TAWS DISPLAY" then
+			lAMUL[5] = "PILOT\n/COPILOT"
+			lAMUL[8] = "CENTER\n/OFFSET"
+			lAMUL[11] = "MAG/TRUE\n/GRID"
+			lAMUL[16] = "HDG/TK"
+			table.insert(lAMUL, 19, "RANGE\n"..lAMUL[2])
+			table.remove(lAMUL, 18)
+			table.remove(lAMUL, 17)
+			table.remove(lAMUL, 15)
+			table.remove(lAMUL, 14)
+			table.remove(lAMUL, 13)
+			table.remove(lAMUL, 12)
+			table.remove(lAMUL, 10)
+			table.remove(lAMUL, 9)
+			table.remove(lAMUL, 7)
+			table.remove(lAMUL, 6)
+			table.remove(lAMUL, 2)
+			table.remove(lAMUL, 1)
+		elseif lAMUL[2] == "DEFAULTS" then
+			lAMUL[4] = "<TAKEOFF\n/APPROACH"
+			table.insert(lAMUL, 6, "")
+			table.insert(lAMUL, 7, "")
+			table.insert(lAMUL, 8, "")
+			table.insert(lAMUL, 9, "")
+		elseif lAMUL[3] == "NAV SELECT" then
+			lAMUL[2] = "NAV SELECT"
+			lAMUL[3] = "PILOT\n/COPILOT"
+			lAMUL[6] = "SHIP SOLN\nINAV1/2"
+			if lAMUR[2] == "POINTER 1" then
+				lAMUL[4] = "<PNTR 1\n"..lAMUL[8]
+				lAMUL[5] = "<PNTR 2\n"..lAMUL[9]
+				lAMUL[7] = "CDI "..	lAMUL[14]
+			elseif lAMUR[2] == "POINTER 2" then
+				lAMUL[4] = "<PNTR 1\n"..lAMUL[7]
+				lAMUL[5] = string.gsub(lAMUL[18], "(.*%d)%s", "%1\n")
+				lAMUL[7] = "CDI "..	lAMUL[13]
+			elseif lAMUR[2] == "" or lAMUR[2] == "EGI POWER" then
+				lAMUL[4] = "<PNTR 1\n"..lAMUL[7]
+				lAMUL[5] = "<PNTR 2\n"..lAMUL[8]
+				lAMUL[7] = "CDI "..	lAMUL[13]
+			else
+				lAMUL[4] = "<PNTR 1\n"..lAMUL[7]
+				lAMUL[5] = "<PNTR 2\n"..lAMUL[8]
+				lAMUL[7] = lAMUL[1]
+			end
+			lAMUL[8] = ""
+			lAMUL[9] = "EGI POWER>"
+			lAMUL[10] = "MAIN MENU>"
+		elseif lAMUL[2] == "ACAWS" then
+			lAMUL[7] = "OVERLOW\nHDD POS>"
+			lAMUL[8] = "FAULT LOG\nHDD POS>"
+			lAMUL[9] = "ACAWS\nHDD POS>"
+		elseif lAMUL[2] == "DIAGNOSTICS" then
+			lAMUL[3] = ""
+			lAMUL[4] = "<BUS/RT\nSTATUS"
+			lAMUL[5] = "<MAINT"
+			lAMUL[6] = "<TIME/\nSYS ORDER"
+			lAMUL[7] = "SW QUERY\nHDD POS>"
+			lAMUL[8] = "BUS/RT\nHDD POS>"
+			lAMUL[9] = "MAINT\nHDD POS>"
+			lAMUL[10] = "MAIN MENU>"	
+		elseif findIndexBySubstring(lAMUL,"LIGHTING")  then
+			lAMUL[3] = "<CVRT\nWNGTP/FSLG\n"..string.match(lAMUL[findIndexBySubstring(lAMUL,"<CVRT WNGTP/FSLG%s*%d+")], "%s*(%d+%%).*$")
+			lAMUL[4] = "<CVRT TAIL\n"..string.match(lAMUL[findIndexBySubstring(lAMUL,"<CVRT TAIL%s*%d+")], "%s*(%d+%%).*$")
+			lAMUL[7] = "CVRT FORM\n"..string.match(lAMUL[findIndexBySubstring(lAMUL,"CVRT FORM%s*%d+")], "%s*(%d+%%>).*$")
+			lAMUL[8] = "CVRT FLASH\nRATE  "..(string.match(lAMUL[findIndexBySubstring(lAMUL,"CVRT FLASH RATE%s*%d+")], "%s*(%d+>).*$") or "ERROR")
+			lAMUL[5] = "CVRT ANTI\nCOLLISION\n"
+			if findIndexBySubstring(lAMUL,"LO") then
+				lAMUL[5] = lAMUL[5].."LO"
+			elseif findIndexBySubstring(lAMUL,"DIM") then
+				lAMUL[5] = lAMUL[5].."DIM"
+			elseif findIndexBySubstring(lAMUL,"HI") then
+				lAMUL[5] = lAMUL[5].."HI"
+			else 
+				lAMUL[5] = lAMUL[5].."SCRIPT ERROR"
+			end
+			lAMUL[2] = "LIGHTING"
+			lAMUL[6] = "<INTERIOR\nLTG TRM"
+			lAMUL[10] = "MAIN MENU>"
+			lAMUL[9] = ""
+		elseif lAMUL[2] == "PREFLIGHT" then
+			lAMUL[3] = "SMOKE\nDETECTOR"
+			lAMUL[4] = "<PROP\nOVRSPD\nGVNR"
+			lAMUL[5] = ""
+			lAMUL[6] = "<HUD TEST"
+			lAMUL[7] = "FIRE\nDETECTION\nTEST"
+			lAMUL[8] = "SENSOR\nDATA>"
+			lAMUL[9] = "RAMP/DR\nWOW OVRD\nON/OFF"
+			lAMUL[10] = "MAIN MENU>"
+		elseif lAMUL[2] == "GCAS/TAWS" then
+			lAMUL[3] = "NORMAL\nTACTICAL"
+			lAMUL[4] = "GS INHIBIT"
+			lAMUL[5] = "FLAP INHIBIT"
+			lAMUL[6] = "GCAS\nOFF/ON"
+			lAMUL[7] = ""
+			lAMUL[8] = ""
+			lAMUL[9] = "TAWS\nOFF/ON"
+			lAMUL[10] = "MAIN MENU>"	
+			if findIndexBySubstring(lAMUL,"POPUP") then
+				lAMUL[7] = "POPUP\nINHIBIT"
+				lAMUL[8] = "TERRAIN\nINHIBIT"
+			end
+		else
+			lAMUL[2] = "SCRIPT\nERROR"
+		end
+		
+		--STEP 2: loop through SendData calls
+		for i = 0, 8 do
+			ExportScript.Tools.SendData(20000 + i, lAMUL[i+2] or "") -- +2 because formatted AMU lists always starts with title at index 2
+		end
+		
+	else  -- Fallback to empty strings
+		ExportScript.Tools.SendData(20000, "SCRIPT\nERROR")
+		for i = 1, 8 do
+			ExportScript.Tools.SendData(20000 + i, "") 
+		end
+	end
+
+
+
+	--Right Seat Right AMU
+	if lAMUR ~= nil then
+		-- STEP 1: Format by page
+		if lAMUL[2] == "MAIN MENU" and lAMUR[2] == "MAIN MENU" then
+			lAMUR[3] = "<NAV\nSELECT"
+			lAMUR[9] = "GCAS/TAWS\nAND STALL>"
+			table.insert(lAMUR, 8, "")
+		elseif lAMUL[2] == "PFD" and lAMUR[2] == "HDD POS" then
+			if lAMUR[3] == "HDD 3" then
+				table.insert(lAMUR, 3, "")
+				table.insert(lAMUR, 4, "")
+			else 
+				table.insert(lAMUR, 5, "")
+				table.insert(lAMUR, 6, "")
+			end
+		elseif lAMUL[2] == "ENGINE DIAGNOSTICS" then
+			if lAMUR[2] == "ENGINE DATA" then
+				lAMUR[3] = "PLA/BETA\n".. string.gsub(lAMUR[4], "^%s*%d+%s+(%+%d?%.%d+)%s*%+(%d?%.%d+)", "%1/%2")
+				lAMUR[4] = string.gsub(lAMUR[5], "^%s*%d+%s+(%+%d?%.%d+)%s*%+(%d?%.%d+)", "%1/%2")
+				lAMUR[5] = string.gsub(lAMUR[6], "^%s*%d+%s+(%+%d?%.%d+)%s*%+(%d?%.%d+)", "%1/%2")
+				lAMUR[6] = string.gsub(lAMUR[7], "^%s*%d+%s+(%+%d?%.%d+)%s*%+(%d?%.%d+)", "%1/%2")
+				lAMUR[7] = "FIC\nA B"
+				lAMUR[8] = "A B"
+				lAMUR[9] = "A B"
+				lAMUR[10] = "A B"
+			elseif lAMUR[2] == "FADEC CALIBRATION" then
+				lAMUR[3] = "ENG\n1/2/3/4"
+				table.insert(lAMUR, 5, "")
+				table.insert(lAMUR, 6, "")
+				table.insert(lAMUR, 7, "")
+			elseif lAMUR[2] == "NIU RESET" then
+				lAMUR[3] = "ENG\n1/2/3/4"
+				table.insert(lAMUR, 4, "")
+				table.insert(lAMUR, 5, "")
+				table.insert(lAMUR, 6, "")
+				table.insert(lAMUR, 7, "")
+				lAMUR[8] = "RESET NIU"
+				table.insert(lAMUR, 9, "")
+				table.insert(lAMUR, 10, "")
+			end
+		elseif lAMUL[2] == "CAPS DISPLAY" and lAMUR[2] == "OVERLAYS" then
+			lAMUR[6] = "WPT IDS\n& CRS"
+			lAMUR[8] = "CLEAR\nALL"
+			table.insert(lAMUR, 8, "")
+			table.insert(lAMUR, 9, "")
+			
+		elseif lAMUL[2] == "NAV-RADAR DISPLAY" then
+			if lAMUR[2] == "RANGE" then
+				lAMUR[10] = "320(64)\n/160(32)"
+			elseif lAMUR[2] == "OVERLAYS" then
+				lAMUR[6] = "WPT IDS\n& CRS"
+				table.insert(lAMUR, 9, "")
+			end
+		elseif lAMUL[2] == "DIG MAP DISPLAY" then
+			if lAMUR[2] == "OVERLAYS" then
+				table.insert(lAMUR, 6, "")
+				table.insert(lAMUR, 7, "")
+				table.insert(lAMUR, 8, "")
+				table.insert(lAMUR, 9, "")
+			elseif lAMUR[2] == "MAP COVERAGE" then
+				lAMUR[3] = "EMMU\nSLOT 0"
+				lAMUR[4] = "EMMU\nSLOT 1"
+			end
+		elseif lAMUL[2] == "TAWS DISPLAY" then
+			if lAMUR[2] == "RANGE" then
+				lAMUR[10] = "320(64)\n/160(32)"
+			elseif lAMUR[2] == "OVERLAYS" then
+				lAMUR[6] = "WPT IDS\n& CRS"
+				table.insert(lAMUR, 9, "")
+			elseif lAMUR[2] == "HDD POS" then
+				if lAMUR[3] == "HDD 3" then
+					table.insert(lAMUR, 3, "")
+					table.insert(lAMUR, 4, "")
+				else 
+					table.insert(lAMUR, 5, "")
+					table.insert(lAMUR, 6, "")
+				end
+			end
+		elseif lAMUL[2] == "NAV SELECT" then
+			if lAMUR[2] == "POINTER 1" or lAMUR[2] == "POINTER 2" then
+				table.insert(lAMUR, 9, "")
+			elseif lAMUR[2] == "EGI POWER" then
+				lAMUR[3] = "MASTER\nEGI OFF"
+				lAMUR[4] = "EGI 1\nRECYCLE"
+				table.insert(lAMUR, 5, "")
+				table.insert(lAMUR, 6, "")
+				table.insert(lAMUR, 7, "")
+				lAMUR[8] = "EGI 2\nRECYCLE"
+				table.insert(lAMUR, 9, "")
+				lAMUR[10] = string.gsub(lAMUR[10], "(VERIFY EGI)%s", "%1\n")
+			end
+		elseif lAMUL[2] == "ACAWS" then
+			if lAMUR[2] == "OVERFLOW" or lAMUR[2] == "FAULT LOG"then
+				table.insert(lAMUR, 3, "")
+				table.insert(lAMUR, 4, "")
+				table.insert(lAMUR, 5, "")
+				table.insert(lAMUR, 6, "")
+				table.insert(lAMUR, 7, "")
+				table.insert(lAMUR, 8, "")
+			elseif lAMUR[2] == "STORE" then
+				lAMUR[3] = string.gsub(lAMUR[3], " ", "\n")
+				lAMUR[4] = string.gsub(lAMUR[4], " ", "\n")
+				lAMUR[5] = string.gsub(lAMUR[5], " ", "\n")
+				lAMUR[6] = string.gsub(lAMUR[6], " ", "\n")
+				table.insert(lAMUR, 9, "")
+				lAMUR[10] = string.gsub(lAMUR[10], " ", "\n")
+			end
+		elseif findIndexBySubstring(lAMUL,"LIGHTING")  then
+			if lAMUR[2] == "COVERT ANTI-COLLISION" then
+				lAMUR[7] = "HI/LO/DIM"
+				lAMUR[8] = ""
+				lAMUR[9] = ""
+				lAMUR[10] = ""
+			elseif lAMUR[2] == "COVERT FLASH RATE" then
+				lAMUR[2] = string.gsub(lAMUR[2], " ", "\n")
+				lAMUR[6] = string.gsub(lAMUR[6], " ", "\n")
+			end
+		elseif lAMUL[2] == "PREFLIGHT" then
+			if lAMUR[2] == "SENSOR DATA" then
+				lAMUR[7] = string.match(lAMUR[3], "%s*(%d+%.%d%%)")
+				lAMUR[8] = string.match(lAMUR[4], "%s*(%d+)")
+				lAMUR[9] = string.match(lAMUR[5], "%s*(%d+)")
+				lAMUR[3] = "FLAP POSN"
+				lAMUR[4] = "AIL UTIL\nPRESS"
+				lAMUR[5] = "AIL BOOST\nPRESS"
+				lAMUR[6] = ""
+			elseif lAMUR[2] == "COVERT FLASH RATE" then
+				lAMUR[2] = string.gsub(lAMUR[2], " ", "\n")
+				lAMUR[6] = string.gsub(lAMUR[6], " ", "\n")
+			elseif lAMUR[2] == "HUD TEST" then
+				table.insert(lAMUR, 6, "")
+				table.insert(lAMUR, 9, "")
+				lAMUR[5] = "PREV\nHUD MENU"
+				lAMUR[10] = "EXIT\nHUD TEST"
+			end
+		elseif lAMUR[2] == "STALL AND SIDESLIP" then
+			lAMUR[3] = "STALL WARN\nOFF/ON"
+			lAMUR[4] = "PUSHER\nOFF/ON"
+			lAMUR[5] = "PUSHER\nTEST"
+			lAMUR[6] = ""
+			lAMUR[7] = ""
+			lAMUR[8] = "VERIFY\nON"
+			lAMUR[9] = ""
+			lAMUR[10] = "SIDESLIP\nWARN\nOFF/ON"
+		else
+			lAMUR[2] = "SCRIPT\nERROR"
+		end
+		
+		--STEP 2: loop through SendData calls
+		for i = 0, 8 do
+			ExportScript.Tools.SendData(21000 + i, lAMUR[i+2] or "") -- +2 because formatted AMU lists always starts with title at index 2
+		end
+		
+	else  -- Fallback to empty strings
+		ExportScript.Tools.SendData(21000, "SCRIPT\nERROR")
+		for i = 1, 8 do
+			ExportScript.Tools.SendData(21000 + i, "") 
+		end
+	end
 	
 	
 	--[[
