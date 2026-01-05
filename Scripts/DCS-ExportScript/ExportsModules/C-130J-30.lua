@@ -242,13 +242,35 @@ ExportScript.ConfigArguments =
 	
 	--FIRE HANDLES
 	[314] = "%1d",			--Engine 1 Fire Handle, push/pull {0,1}
-	[315] = "%0.1f",		--Engine 1 Fire Handle, CCW/NORM/CW {-0.5, 0.0, 0.5}
 	[316] = "%1d",			--Engine 2 Fire Handle, push/pull {0,1}
-	[317] = "%0.1f",		--Engine 2 Fire Handle, CCW/NORM/CW {-0.5, 0.0, 0.5}
 	[318] = "%1d",			--Engine 3 Fire Handle, push/pull {0,1}
-	[319] = "%0.1f",		--Engine 3 Fire Handle, CCW/NORM/CW {-0.5, 0.0, 0.5}
 	[320] = "%1d",			--Engine 4 Fire Handle, push/pull {0,1}
-	[321] = "%0.1f",		--Engine 4 Fire Handle, CCW/NORM/CW {-0.5, 0.0, 0.5}
+	[324] = "%1d",			--Engine 4 Fire Handle, push/pull {0,1}
+
+	
+	--FUEL PANEL
+	[356] = "%1d",			--Left External Tank Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
+	[357] = "%1d",			--Main Tank 1 Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
+	[358] = "%1d",			--Main Tank 2 Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
+	[359] = "%1d",			--Left Auxiliary Tank Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
+	[361] = "%1d",			--Right Auxiliary Tank Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
+	[363] = "%1d",			--Main Tank 3 Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
+	[364] = "%1d",			--Main Tank 4 Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
+	[365] = "%1d",			--Right External Tank Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
+	
+	[360] = "%1d",			--Crosship Separation Valve Switch, CLOSED/OPEN {0, 1}
+	[366] = "%1d",			--Engine 1 Crossfeed Valve Switch, CLOSED/OPEN {0, 1}
+	[367] = "%1d",			--Engine 2 Crossfeed Valve Switch, CLOSED/OPEN {0, 1}
+	[368] = "%1d",			--Engine 3 Crossfeed Valve Switch, CLOSED/OPEN {0, 1}
+	[369] = "%1d",			--Engine 4 Crossfeed Valve Switch, CLOSED/OPEN {0, 1}
+	
+	[332] = "%1d",			--Left Fuel Dump Switch Guard, CLOSED/OPEN {0, 1}
+	[333] = "%1d",			--Right Fuel Dump Switch Guard, CLOSED/OPEN {0, 1}
+	[1338] = "%1d",			--Left Fuel Dump Switch, OFF/ON {0, 1}
+	[1339] = "%1d",			--Right Fuel Dump Switch, OFF/ON {0, 1}
+	
+	[370] = "%0.3f",		--Fuel Tank Select, OFF/1/2/LA/RA/3/4/LE/RE {0, 0.125 Steps, 1}
+	[362] = "%1d",			--SPR Valve Switch, OPEN/CLOSED/DRAIN {-1, 0, 1}
 	
 	--ENGINE PANEL
 	[310] = "%0.2f",		--Engine 1 Start Switch, MOTOR/STOP/RUN/START {-0.33, 0.00, 0.50, 1.00}
@@ -303,6 +325,9 @@ ExportScript.ConfigArguments =
 	[391] = "%1d",			--Engine 2 Nacelle Shutoff Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
 	[392] = "%1d",			--Engine 3 Nacelle Shutoff Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
 	[393] = "%1d",			--Engine 4 Nacelle Shutoff Valve Switch, CLOSE/AUTO/OPEN {-1, 0, 1}
+	
+	--AIR CONDITIONING PANEL
+	[469] = "%1d",			--Underfloor Heat/Fan Switch, FAN/OFF/HEAT-FAN {-1, 0, 1}
 
 	--LANDING GEAR & LIGHTS PANEL
 	[126] = "%1d",			--Landing Gear Handle, DOWN/UP {0, 1}
@@ -319,7 +344,7 @@ ExportScript.ConfigArguments =
 	
 	--RADAR PANEL
 	[485] = "%0.1f",		--Radar Master Power Switch, OFF/ON/TEST {0.0, 0.5, 1.0}
-	[485] = "%0.2f",		--Radar Master Power Switch, RM/CUR/SYM/VID {0.0, 0.33, 0.66, 1.0}
+	[486] = "%0.2f",		--Radar Master Power Switch, RM/CUR/SYM/VID {0.0, 0.33, 0.66, 1.0}
 	
 	--PILOT LIGHTING PANEL
 	[1337] = "%1d",			--Lighting Mode Master Switch, TSTORM/NORM/NVIS {-1, 0, 1}
@@ -408,6 +433,7 @@ ExportScript.ConfigArguments =
 	[478] = "%1d",			--Air Deflector Control Switch, CLOSE/OPEN {0, 1}
 	[474] = "%0.1f",		--Computer Drop Switch, MANUAL/AD-MAN TJ-AUTO/AUTO {0, 0.5, 1}
 	[479] = "%1d",			--Ramp/Door Control Switch, CLOSE/OFF/OPEN {-1, 0, 1}
+	[78] = "%1d",			--Cargo Bay Alarm Switch Guard, CLOSE/OFF/OPEN {0, 1}
 	
 	--TRIM ELEVATOR TAB
 	[1334] = "%1d",			--Elevator Trim Tab Power Switch, EMER/OFF/NORM {-1, 0, 1}
@@ -425,7 +451,7 @@ ExportScript.ConfigArguments =
 	[74] = "%0.2f",			--CMDS Mode Selector, STBY/MAN/SEMI/AUTO/BYP {0, 0.25 Steps, 1}
 	
 	--FLAPS
-	[16] = "%0.2f",			--Flap Control Lever, Slider {0, 0.05 Steps, 1}	
+	[16] = "%0.2f",			--Flap Control Lever, Slider {0, 0.05 Steps, 1}
 	
 	--ARC-210 RCU
 	[543] = "%0.2f",		--Operational Mode Switch, OFF/TR+G/TR/ADF/CHG PRST/TEST/ZERO(PULL) {0, 0.16 Steps, 1}
@@ -535,7 +561,7 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 	   
 	
 	--uncomment to split line list length and values to log
-	--[[
+	
 	lTEMP = splitLines(list_indication(24))
 
 	ExportScript.Tools.WriteToLog('\nlTEMP Length: ' .. #lTEMP)
@@ -545,7 +571,6 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 			ExportScript.Tools.WriteToLog('Index:'.. i .. '   Value:' .. lTEMP[i])
 		end
 	end
-	]]
 	
 	---------- ELECTRICAL PANEL ----------
 	lTEMP = splitLines(list_indication(23))
@@ -595,63 +620,63 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 		---------- FUEL PANEL ----------
 	lTEMP = splitLines(list_indication(24))			--TOTAL QTY
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(24001, lTEMP[2])
+		ExportScript.Tools.SendData(24001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(24001, "")
 	end
 	
 	lTEMP = splitLines(list_indication(25))			--1 Main
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(25001, lTEMP[2])
+		ExportScript.Tools.SendData(25001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(25001, "")
 	end
 	
 	lTEMP = splitLines(list_indication(26))			--2 Main
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(26001, lTEMP[2])
+		ExportScript.Tools.SendData(26001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(26001, "")
 	end
 	
 	lTEMP = splitLines(list_indication(27))			--3 Main
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(27001, lTEMP[2])
+		ExportScript.Tools.SendData(27001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(27001, "")
 	end
 	
 	lTEMP = splitLines(list_indication(28))			--4 Main
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(28001, lTEMP[2])
+		ExportScript.Tools.SendData(28001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(28001, "")
 	end
 	
 	lTEMP = splitLines(list_indication(29))			--L AUX
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(29001, lTEMP[2])
+		ExportScript.Tools.SendData(29001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(29001, "")
 	end
 	
 	lTEMP = splitLines(list_indication(30))			--R AUX
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(30001, lTEMP[2])
+		ExportScript.Tools.SendData(30001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(30001, "")
 	end
 	
 	lTEMP = splitLines(list_indication(31))			--L EXT
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(31001, lTEMP[2])
+		ExportScript.Tools.SendData(31001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(31001, "")
 	end
 	
 	lTEMP = splitLines(list_indication(32))			--R EXT
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(32001, lTEMP[2])
+		ExportScript.Tools.SendData(32001, lTEMP[3]..'\n'..lTEMP[2])
 	else
 		ExportScript.Tools.SendData(32001, "")
 	end
@@ -666,20 +691,16 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 		---------- AIR COND PANEL ----------
 	lTEMP = splitLines(list_indication(36))			--FLT STA
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(36001, lTEMP[2])--ACTUAL
-		ExportScript.Tools.SendData(36002, lTEMP[3])--SET
+		ExportScript.Tools.SendData(36001, lTEMP[2]..'\n'..lTEMP[3])--ACTUAL/SET
 	else
 		ExportScript.Tools.SendData(36001, "")	
-		ExportScript.Tools.SendData(36002, "")
 	end
 	
 	lTEMP = splitLines(list_indication(37))			--CARGO COMPT
 	if lTEMP ~= nil then
-		ExportScript.Tools.SendData(37001, lTEMP[2])--ACTUAL
-		ExportScript.Tools.SendData(37002, lTEMP[3])--SET
+		ExportScript.Tools.SendData(37001, lTEMP[2]..'\n'..lTEMP[3])--ACTUAL/SET
 	else
 		ExportScript.Tools.SendData(37001, "")
-		ExportScript.Tools.SendData(37002, "")
 	end
 	
 		---------- HYDRAULIC PANEL ----------
