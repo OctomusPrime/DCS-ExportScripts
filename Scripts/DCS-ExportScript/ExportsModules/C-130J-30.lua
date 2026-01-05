@@ -427,6 +427,8 @@ ExportScript.ConfigArguments =
 	[70] = "%0.2f",			--AFCS Turn Control Knob / Center Detent, Rotary {-1, 1}
 	[52] = "%1d",			--Pilot AFCS Engage Switch, DISENGAGE/ENGAGE {0, 1}
 	[53] = "%1d",			--Copilot AFCS Engage Switch, DISENGAGE/ENGAGE {0, 1}
+	[490] = "%0.2f",		--Pilot Heading Adjust, Rotary {-1, 1}
+	[491] = "%0.2f",		--Pilot COURSE Adjust, Rotary {-1, 1}
 	
 	--AERIAL DELIVERY PANEL
 	[76] = "%1d",			--Chute Release Button Cover, CLOSED/OPEN {0, 1}
