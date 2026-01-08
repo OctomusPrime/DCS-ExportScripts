@@ -246,7 +246,9 @@ ExportScript.ConfigArguments =
 	[318] = "%1d",			--Engine 3 Fire Handle, push/pull {0,1}
 	[320] = "%1d",			--Engine 4 Fire Handle, push/pull {0,1}
 	[324] = "%1d",			--Engine 4 Fire Handle, push/pull {0,1}
-
+	
+	--PARKING BRAKE
+	[29] = "%1d",			--Parking Brake Handle, push/pull {0,1}
 	
 	--FUEL PANEL
 	[356] = "%1d",			--Left External Tank Transfer Pump Selector, FROM/OFF/TO {-1, 0, 1}
@@ -561,7 +563,8 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 	
 	
 	local lTEMP   
-	   
+	
+	--ExportScript.ListIndicationLogDump(mainPanelDevice)
 	
 	--uncomment to split line list length and values to log
 	--[[
@@ -575,6 +578,15 @@ function ExportScript.ProcessIkarusDCSConfigLowImportance(mainPanelDevice)
 		end
 	end
 	]]
+	
+	
+	---------- APU PANEL ----------
+	lTEMP = splitLines(list_indication(33))
+	if lTEMP ~= nil then
+		ExportScript.Tools.SendData(33001, lTEMP[2])
+	else
+		ExportScript.Tools.SendData(33001, "")
+	end
 	
 	---------- ELECTRICAL PANEL ----------
 	lTEMP = splitLines(list_indication(23))
